@@ -7,7 +7,7 @@ Antes de começar, você precisa ter o Docker e o Git instalados em seu sistema.
 ### Instalação do Git
 
 #### Windows
-1. Baixe o instalador do Git em https://git-scm.com/download/windows
+1. Baixe o instalador do Git em https://git-scm.com/downloads
 2. Execute o instalador e siga as instruções
 3. Para usar os comandos Git, abra o Git Bash:
    - Clique com o botão direito em qualquer pasta
