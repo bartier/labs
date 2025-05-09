@@ -1,79 +1,158 @@
-# Tutorial Flask API com Docker
+
+# Tutorial: API Flask Simples com Docker
+
+Este tutorial guia você na execução de uma API Flask simples que gera números aleatórios, utilizando Docker para containerização. As instruções são fornecidas para Windows, macOS e Linux.
 
 ## Pré-requisitos
 
-Antes de começar, você precisa ter o Docker e o Git instalados em seu sistema.
+Antes de começar, você precisará de um terminal ou linha de comando e das seguintes ferramentas instaladas:
 
-### Instalação do Git
+1. **Git:** Para clonar o repositório.  
+2. **Docker:** Para construir e executar a aplicação containerizada.
 
-#### Windows
-1. Baixe o instalador do Git em https://git-scm.com/downloads
-2. Execute o instalador e siga as instruções
-3. Para usar os comandos Git, abra o Git Bash:
-   - Clique com o botão direito em qualquer pasta
-   - Selecione "Git Bash Here" no menu de contexto
-   - Ou pesquise "Git Bash" no menu Iniciar
-4. Verifique a instalação digitando: `git --version`
+### Ambiente de Terminal
 
-#### macOS
-Execute o seguinte comando no terminal:
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install git
-```
+- **Windows:** É **altamente recomendado** usar o [Windows Subsystem for Linux (WSL 2)](https://learn.microsoft.com/pt-br/windows/wsl/install). O WSL 2 oferece um ambiente Linux integrado ao Windows, proporcionando a melhor compatibilidade e performance para Docker. Após instalar o WSL (exemplo: Ubuntu via Microsoft Store), você pode abrir o terminal WSL (ex: "Ubuntu" no Menu Iniciar). Alternativamente, para comandos Git *apenas*, você pode usar o Git Bash. No entanto, **todos os comandos `docker` devem ser executados preferencialmente dentro do terminal WSL**.
 
-#### Linux (Ubuntu)
-Execute o seguinte comando no terminal:
+- **macOS:** Use o aplicativo Terminal padrão (`Applications > Utilities > Terminal`).
 
-```bash
-sudo apt-get update
-sudo apt-get install git
-```
+- **Linux:** Use o terminal padrão da sua distribuição (ex: GNOME Terminal, Konsole, etc.).
 
-### Instalação do Docker
+## Instalação do Git
 
-#### Windows e macOS
-1. Baixe o Docker Desktop em https://www.docker.com/products/docker-desktop
-2. Execute o instalador e siga as instruções
-3. Verifique a instalação: `docker --version`
+### Windows (com WSL ou Git Bash)
 
-#### Linux (Ubuntu)
-```bash
-sudo apt-get update
-sudo apt-get install docker.io
-sudo systemctl start docker
-sudo systemctl enable docker
-```
+1. **Via WSL:**
+    ```bash
+    sudo apt update
+    sudo apt install git -y
+    ```
+
+2. **Via Git Bash (Alternativa):**
+    - Baixe o instalador em [https://git-scm.com/downloads](https://git-scm.com/downloads).
+    - Execute o instalador e siga as instruções.
+    - Abra o Git Bash.
+
+3. **Verificação:**
+    ```bash
+    git --version
+    ```
+
+### macOS (usando Homebrew)
+
+1. Instale o Homebrew (caso ainda não tenha):
+    ```bash
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
+
+2. Instale o Git:
+    ```bash
+    brew install git
+    ```
+
+3. Verifique:
+    ```bash
+    git --version
+    ```
+
+### Linux (Exemplo para Ubuntu/Debian)
+
+1. Instale o Git:
+    ```bash
+    sudo apt-get update
+    sudo apt-get install git -y
+    ```
+
+2. Verifique:
+    ```bash
+    git --version
+    ```
+
+## Instalação do Docker
+
+### Windows e macOS (usando Docker Desktop)
+
+1. Baixe e instale o Docker Desktop em [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop).
+
+2. **Importante para Windows:** Habilite a integração com o WSL 2 nas configurações:
+   `Settings > Resources > WSL Integration`.
+
+3. Verifique:
+    ```bash
+    docker --version
+    ```
+
+### Linux (Exemplo para Ubuntu/Debian)
+
+1. Instale o Docker Engine:
+    ```bash
+    sudo apt-get update
+    sudo apt-get install docker.io -y
+    ```
+
+2. Inicie e habilite o serviço:
+    ```bash
+    sudo systemctl start docker
+    sudo systemctl enable docker
+    ```
+
+3. (Opcional) Adicione seu usuário ao grupo `docker`:
+    ```bash
+    sudo usermod -aG docker $USER
+    ```
+
+4. Verifique:
+    ```bash
+    docker --version
+    ```
+
+## Começando
+
+1. **Clone o Repositório:**
+    ```bash
+    git clone <url-do-repositorio>
+    cd <nome-do-diretorio-clonado>
+    ```
+
+2. **Execute os comandos Docker dentro do diretório clonado.**
 
 ## Sobre a API Flask
 
-Esta é uma API simples desenvolvida com Flask que gera números aleatórios. A API possui o seguinte endpoint:
+API simples com Flask que gera números aleatórios.
 
-- `GET /random`: Retorna um número aleatório entre 1 e 100
+- `GET /random`: Retorna um número entre 1 e 100 em JSON.
 
 ## Usando Docker
 
-### Construir e Executar
+### Construir a Imagem Docker
 
 ```bash
-# Build da imagem
-docker build -t flask-api .
-
-# Executar o container
-docker run -d -p 5000:5000 --name flask-container flask-api
+docker build -t teste .
 ```
 
-### Gerenciamento do Container
+### Executar o Container Docker
 
 ```bash
-# Visualizar logs
-docker logs flask-container
+docker run -d -p 9000:8000
+```
 
-# Listar containers
+- `-d`: Modo background
+- `-p 9000:8000`: Mapeia porta host:container
+- `teste`: Nome da imagem
+
+### Gerenciamento Básico do Container
+
+```bash
+# Ver logs
+docker logs <ID do container>
+
+# Containers em execução
 docker ps
 
-# Parar/Iniciar container
+# Parar container
 docker stop flask-container
+
+# Iniciar container
 docker start flask-container
 
 # Remover container
@@ -82,14 +161,18 @@ docker rm flask-container
 
 ## Testando a API
 
-Após iniciar o container, teste a API usando curl ou Postman:
+- **curl (linha de comando):**
+    ```bash
+    curl http://localhost:9000/random
+    ```
 
-```bash
-# Obter um número aleatório
-curl http://localhost:5000/random
-```
+- **Navegador:**  
+  Acesse [http://localhost:9000/random](http://localhost:9000/random)
 
-A resposta será um JSON com um número aleatório:
+Resposta esperada (exemplo):
+
 ```json
-{"number": 42}
+{
+  "number": 42
+}
 ```
