@@ -114,7 +114,7 @@ make down
 Para parar os contêineres e remover os volumes (isso excluirá todos os dados), execute:
 
 ```bash
-make down-v
+make clean
 ```
 
 Alternativamente, você pode usar os comandos Docker Compose diretamente:
@@ -131,14 +131,13 @@ docker-compose down -v
 
 Este projeto inclui um Makefile para simplificar as operações do Docker Compose. Aqui estão os comandos disponíveis:
 
-- `make build` - Construir as imagens Docker
-- `make up` - Iniciar os contêineres em modo desanexado
-- `make down` - Parar os contêineres
-- `make down-v` - Parar os contêineres e remover volumes
-- `make logs` - Visualizar logs de todos os contêineres
-- `make logs-app` - Visualizar logs do contêiner da aplicação
-- `make logs-db` - Visualizar logs do contêiner do banco de dados
-- `make ps` - Listar contêineres em execução
-- `make restart` - Reiniciar todos os contêineres
-- `make clean` - Remover todos os contêineres, redes, volumes e imagens
-- `make help` - Exibir comandos disponíveis
+- `make docker-build`: Constrói a imagem Docker da aplicação usando o Dockerfile
+- `make build`: Constrói os serviços definidos no docker-compose.yml
+- `make up`: Inicia os contêineres em modo detached (background)
+- `make down`: Para e remove os contêineres
+- `make logs`: Exibe os logs de todos os serviços
+- `make logs-app`: Exibe os logs apenas do serviço da aplicação
+- `make logs-db`: Exibe os logs apenas do serviço do banco de dados
+- `make ps`: Lista os contêineres em execução
+- `make restart`: Reinicia todos os serviços
+- `make clean`: Para os contêineres, remove os volumes e limpa recursos Docker não utilizados
