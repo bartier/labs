@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=tasks_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    depends_on:
+      - db
+    networks:
+      - task_network
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=tasks_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - task_network
+
+volumes:
+  mysql_data:
+
+networks:
+  task_network:
+    driver: bridge
